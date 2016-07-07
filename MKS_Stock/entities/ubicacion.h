@@ -8,7 +8,8 @@ class Ubicacion : public EntidadBase
 {
     Q_OBJECT
 public:
-    explicit Ubicacion(QObject *parent = 0);
+    //explicit Ubicacion(QObject *parent = 0);
+    explicit Ubicacion(const QSqlRecord &record, QObject *parent = 0);
 
     QString nombre() const;
 

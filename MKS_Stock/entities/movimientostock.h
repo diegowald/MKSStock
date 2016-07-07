@@ -14,7 +14,8 @@ class MovimientoStock : public EntidadBase
 {
     Q_OBJECT
 public:
-    explicit MovimientoStock(QObject *parent = 0);
+    //explicit MovimientoStock(QObject *parent = 0);
+    explicit MovimientoStock(const QSqlRecord &record, QObject *parent = 0);
 
     QSharedPointer<Usuario> usuario();
     QSharedPointer<Producto> producto();

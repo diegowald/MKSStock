@@ -1,8 +1,12 @@
 #include "usuario.h"
 
-Usuario::Usuario(QObject *parent) : EntidadBase(parent)
+/*Usuario::Usuario(QObject *parent) : EntidadBase(parent)
 {
 
+}*/
+
+Usuario::Usuario(const QSqlRecord &record, QObject *parent) : EntidadBase(record, parent)
+{
 }
 
 QString Usuario::nombre() const

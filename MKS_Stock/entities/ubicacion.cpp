@@ -1,6 +1,11 @@
 #include "ubicacion.h"
 
-Ubicacion::Ubicacion(QObject *parent) : EntidadBase(parent)
+/*Ubicacion::Ubicacion(QObject *parent) : EntidadBase(parent)
+{
+
+}*/
+
+Ubicacion::Ubicacion(const QSqlRecord &record, QObject *parent) : EntidadBase(record, parent)
 {
 
 }

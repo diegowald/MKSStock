@@ -2,6 +2,7 @@
 #define ENTIDADBASE_H
 
 #include <QObject>
+#include <QSqlRecord>
 
 enum class StatusEntidad
 {
@@ -15,7 +16,8 @@ class EntidadBase : public QObject
 {
     Q_OBJECT
 public:
-    explicit EntidadBase(QObject *parent = 0);
+    explicit EntidadBase(const QSqlRecord &record, QObject *parent = 0);
+    //explicit EntidadBase(QObject *parent = 0);
 
     int id() const;
 

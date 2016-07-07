@@ -1,8 +1,15 @@
 #include "entidadbase.h"
+#include <QVariant>
 
-EntidadBase::EntidadBase(QObject *parent) : QObject(parent)
+
+/*EntidadBase::EntidadBase(QObject *parent) : QObject(parent)
 {
 
+}*/
+
+EntidadBase::EntidadBase(const QSqlRecord &record, QObject *parent) : QObject(parent)
+{
+    _id = record.value("id").toInt();
 }
 
 int EntidadBase::id() const

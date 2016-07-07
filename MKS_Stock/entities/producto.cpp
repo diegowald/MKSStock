@@ -1,6 +1,11 @@
 #include "producto.h"
 
-Producto::Producto(QObject *parent) : EntidadBase(parent)
+/*Producto::Producto(QObject *parent) : EntidadBase(parent)
+{
+
+}*/
+
+Producto::Producto(const QSqlRecord &record, QObject *parent) : EntidadBase(record, parent)
 {
 
 }

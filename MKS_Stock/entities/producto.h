@@ -8,7 +8,8 @@ class Producto : public EntidadBase
 {
     Q_OBJECT
 public:
-    explicit Producto(QObject *parent = 0);
+    //explicit Producto(QObject *parent = 0);
+    explicit Producto(const QSqlRecord &record, QObject *parent = 0);
 
     QString nombre() const;
     QString descripcion() const;

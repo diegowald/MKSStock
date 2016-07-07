@@ -4,7 +4,12 @@
 #include "producto.h"
 #include "ubicacion.h"
 
-MovimientoStock::MovimientoStock(QObject *parent) : EntidadBase(parent)
+/*MovimientoStock::MovimientoStock(QObject *parent) : EntidadBase(parent)
+{
+
+}*/
+
+MovimientoStock::MovimientoStock(const QSqlRecord &record, QObject *parent) : EntidadBase(record, parent)
 {
 
 }

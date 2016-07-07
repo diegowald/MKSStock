@@ -8,7 +8,8 @@ class Usuario : public EntidadBase
 {
     Q_OBJECT
 public:
-    explicit Usuario(QObject *parent = 0);
+//    explicit Usuario(QObject *parent = 0);
+    explicit Usuario(const QSqlRecord &record, QObject *parent = 0);
 
     QString nombre() const;
     QString apellido() const;
