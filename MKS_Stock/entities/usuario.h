@@ -10,7 +10,7 @@ class Usuario : public EntidadBase
 public:
 //    explicit Usuario(QObject *parent = 0);
     explicit Usuario(const QSqlRecord &record, QObject *parent = 0);
-
+    explicit Usuario(QObject *parent = 0);
     QString nombre() const;
     QString apellido() const;
     QString password() const;
@@ -27,4 +27,5 @@ private:
     QString _password;
 };
 
+typedef QSharedPointer<Usuario> UsuarioPtr;
 #endif // USUARIO_H

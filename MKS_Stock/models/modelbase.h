@@ -7,6 +7,7 @@
 #include <QVariant>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlRecord>
+#include "models/response.h"
 
 typedef std::function<QVariant (EntidadBasePtr)> GetFunction;
 typedef std::function<bool (EntidadBasePtr, const QVariant&)> SetFunction;
@@ -15,19 +16,31 @@ class modelBase : public QObject
 {
     Q_OBJECT
 public:
-    explicit modelBase(const QString &tableName, const QString &idxColumnName, QObject *parent = 0);
+    explicit modelBase(QSqlDatabase &database, const QString &tableName, const QString &idxColumnName, QObject *parent = 0);
 
-    void mapField(const QString &fieldName, GetFunction getter, SetFunction setter);
-    
-    QList<EntidadBasePtr> get();
 
+    ResponsePtr get();
+    void persist(EntidadBasePtr entidad);
+    void persist(QList<EntidadBasePtr> &list);
+
+    virtual void mapFields() = 0;
 signals:
 
 public slots:
 
-private:
-    EntidadBasePtr createEntity(const QSqlRecord &record);
+protected:
+    void mapField(const QString &fieldName, GetFunction getter, SetFunction setter);
     virtual EntidadBasePtr internalCreateEntity(const QSqlRecord &record) = 0;
+private:
+
+    EntidadBasePtr createEntity(const QSqlRecord &record);
+    QSqlQuery *getQuery(EntidadBasePtr entidad);
+    QSqlQuery *crearInsert(EntidadBasePtr entidad);
+    QSqlQuery *crearUpdate(EntidadBasePtr entidad);
+    QSqlQuery *crearDelete(EntidadBasePtr entidad);
+    QStringList getFieldNamesWithoutIdxColumnName();
+
+
 
 private:
     QMap<QString, GetFunction> _getters;
@@ -35,7 +48,10 @@ private:
     QString _tableName;
     QString _idxColumnName;
 
+    QString _dbName;
     QSqlDatabase _database;
 };
+
+typedef QSharedPointer<modelBase> modelBasePtr;
 
 #endif // MODELBASE_H

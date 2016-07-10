@@ -17,7 +17,7 @@ class EntidadBase : public QObject
     Q_OBJECT
 public:
     explicit EntidadBase(const QSqlRecord &record, QObject *parent = 0);
-    //explicit EntidadBase(QObject *parent = 0);
+    explicit EntidadBase(QObject *parent = 0);
 
     int id() const;
 

@@ -2,14 +2,18 @@
 #include <QVariant>
 
 
-/*EntidadBase::EntidadBase(QObject *parent) : QObject(parent)
+EntidadBase::EntidadBase(QObject *parent) : QObject(parent)
 {
+    _id = -1;
+    _status = StatusEntidad::NUEVO;
+}
 
-}*/
+
 
 EntidadBase::EntidadBase(const QSqlRecord &record, QObject *parent) : QObject(parent)
 {
     _id = record.value("id").toInt();
+    _status = StatusEntidad::SIN_CAMBIOS;
 }
 
 int EntidadBase::id() const
