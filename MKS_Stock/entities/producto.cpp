@@ -1,13 +1,17 @@
 #include "producto.h"
+#include <QVariant>
 
-/*Producto::Producto(QObject *parent) : EntidadBase(parent)
+
+Producto::Producto(QObject *parent) : EntidadBase(parent)
 {
-
-}*/
+    _nombre = "";
+    _descripcion = "";
+}
 
 Producto::Producto(const QSqlRecord &record, QObject *parent) : EntidadBase(record, parent)
 {
-
+    _nombre = record.value("nombre").toString();
+    _descripcion = record.value("descripcion").toString();
 }
 
 QString Producto::nombre() const

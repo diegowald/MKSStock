@@ -20,8 +20,13 @@ public:
 
 
     ResponsePtr get();
+    ResponsePtr get(QList<int> &ids);
+    ResponsePtr get(QSqlQuery &qry);
     void persist(EntidadBasePtr entidad);
     void persist(QList<EntidadBasePtr> &list);
+
+    QStringList headers();
+    QVariant value(EntidadBasePtr entidad, const QString &field);
 
     virtual void mapFields() = 0;
 signals:
@@ -31,6 +36,9 @@ public slots:
 protected:
     void mapField(const QString &fieldName, GetFunction getter, SetFunction setter);
     virtual EntidadBasePtr internalCreateEntity(const QSqlRecord &record) = 0;
+
+    QSqlDatabase &database();
+
 private:
 
     EntidadBasePtr createEntity(const QSqlRecord &record);

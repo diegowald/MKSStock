@@ -8,7 +8,7 @@ class Producto : public EntidadBase
 {
     Q_OBJECT
 public:
-    //explicit Producto(QObject *parent = 0);
+    explicit Producto(QObject *parent = 0);
     explicit Producto(const QSqlRecord &record, QObject *parent = 0);
 
     QString nombre() const;
@@ -23,5 +23,7 @@ private:
     QString _nombre;
     QString _descripcion;
 };
+
+typedef QSharedPointer<Producto> ProductoPtr;
 
 #endif // PRODUCTO_H

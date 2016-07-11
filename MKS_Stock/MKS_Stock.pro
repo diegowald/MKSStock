@@ -24,7 +24,20 @@ SOURCES += main.cpp\
     views/windowusuarios.cpp \
     models/response.cpp \
     models/modelcontainer.cpp \
-    views/dlgusuario.cpp
+    views/dlgusuario.cpp \
+    views/dlgproducto.cpp \
+    views/dlgubicacion.cpp \
+    views/dialogmovimientostock.cpp \
+    models/modelubicaciones.cpp \
+    models/modelproductos.cpp \
+    models/modelmovimientosstock.cpp \
+    controllers/controllerbase.cpp \
+    views/controlledview.cpp \
+    views/tablecontrolledwindow.cpp \
+    controllers/controllerubicaciones.cpp \
+    controllers/controllerusuarios.cpp \
+    controllers/controllerproductos.cpp \
+    controllers/controllermovimientosstock.cpp
 
 HEADERS  += mainwindow.h \
     entities/usuario.h \
@@ -37,11 +50,28 @@ HEADERS  += mainwindow.h \
     views/windowusuarios.h \
     models/response.h \
     models/modelcontainer.h \
-    views/dlgusuario.h
+    views/dlgusuario.h \
+    views/dlgproducto.h \
+    views/dlgubicacion.h \
+    views/dialogmovimientostock.h \
+    models/modelubicaciones.h \
+    models/modelproductos.h \
+    models/modelmovimientosstock.h \
+    controllers/controllerbase.h \
+    views/controlledview.h \
+    views/tablecontrolledwindow.h \
+    controllers/controllerubicaciones.h \
+    controllers/controllerusuarios.h \
+    controllers/controllerproductos.h \
+    controllers/controllermovimientosstock.h
 
 FORMS    += mainwindow.ui \
     views/windowusuarios.ui \
-    views/dlgusuario.ui
+    views/dlgusuario.ui \
+    views/dlgproducto.ui \
+    views/dlgubicacion.ui \
+    views/dialogmovimientostock.ui \
+    views/tablecontrolledwindow.ui
 
 CONFIG += mobility
 MOBILITY =

@@ -8,7 +8,10 @@
 
 enum class MODELS
 {
-    USUARIOS
+    USUARIOS,
+    UBICACIONES,
+    PRODUCTOS,
+    MOVIMIENTOS_STOCK
 };
 
 class ModelContainer : public QObject

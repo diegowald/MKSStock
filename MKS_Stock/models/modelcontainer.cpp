@@ -3,6 +3,8 @@
 #include <QSharedPointer>
 #include <QSqlDatabase>
 #include "models/modelusuarios.h"
+#include "models/modelubicaciones.h"
+#include "models/modelproductos.h"
 
 
 ModelContainer *ModelContainer::_instance;
@@ -29,6 +31,12 @@ void ModelContainer::init()
 
     _models[MODELS::USUARIOS] = ModelUsuariosPtr::create(_database);
     _models[MODELS::USUARIOS]->mapFields();
+
+    _models[MODELS::UBICACIONES] = ModelUbicacionesPtr::create(_database);
+    _models[MODELS::UBICACIONES]->mapFields();
+
+    _models[MODELS::PRODUCTOS] = ModelProductosPtr::create(_database);
+    _models[MODELS::PRODUCTOS]->mapFields();
 }
 
 ModelContainer &ModelContainer::instance()

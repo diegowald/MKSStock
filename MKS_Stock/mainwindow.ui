@@ -51,6 +51,7 @@
     <addaction name="actionUsuarios"/>
     <addaction name="actionUbicaciones"/>
     <addaction name="actionProductos"/>
+    <addaction name="actionMovimientos_de_Inventario"/>
     <addaction name="actionStock"/>
    </widget>
    <addaction name="menuInventario"/>
@@ -73,6 +74,11 @@
   <action name="actionStock">
    <property name="text">
     <string>Stock</string>
+   </property>
+  </action>
+  <action name="actionMovimientos_de_Inventario">
+   <property name="text">
+    <string>Movimientos de Inventario</string>
    </property>
   </action>
  </widget>

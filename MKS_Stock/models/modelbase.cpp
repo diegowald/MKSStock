@@ -18,6 +18,28 @@ void modelBase::mapField(const QString &fieldName, GetFunction getter, SetFuncti
     _setters[fieldName] = setter;
 }
 
+ResponsePtr modelBase::get(QSqlQuery &qry)
+{
+    ResponsePtr response;
+
+    if (!_database.isOpen())
+    {
+        _database.open();
+    }
+
+    qry.exec();
+
+    if (qry.lastError().text() != " ")
+        qDebug() << qry.lastError().text();
+
+    while (qry.next())
+    {
+        response->list().append(createEntity(qry.record()));
+    }
+
+    return response;
+}
+
 ResponsePtr modelBase::get()
 {
     QSqlQuery query(_database);
@@ -38,6 +60,45 @@ ResponsePtr modelBase::get()
 
     sql = "SELECT * from %1;";
     sql = sql.arg(_tableName);
+
+    query.exec(sql);
+    if (query.lastError().text() != " ")
+        qDebug() << query.lastError().text();
+
+    while (query.next())
+    {
+        response->list().append(createEntity(query.record()));
+    }
+
+    return response;
+}
+
+ResponsePtr modelBase::get(QList<int> &ids)
+{
+    QSqlQuery query(_database);
+
+    if (!_database.isOpen())
+    {
+        _database.open();
+    }
+
+    QStringList sIds;
+    foreach(int id, ids)
+    {
+        sIds.append(QString::number(id));
+    }
+
+    QString sql = "SELECT COUNT(*) from %1 where %2 in %3";
+    sql = sql.arg(_tableName).arg(_idxColumnName).arg(sIds.join(", "));
+    query.exec(sql);
+
+    query.next();
+    int total = query.record().value(0).toInt();
+
+    ResponsePtr response = ResponsePtr::create(total, -1, -1, 0, this);
+
+    sql = "SELECT * from %1 where %2 in %3;";
+    sql = sql.arg(_tableName).arg(_idxColumnName).arg(sIds.join(", "));
 
     query.exec(sql);
     if (query.lastError().text() != " ")
@@ -181,4 +242,19 @@ QSqlQuery *modelBase::crearDelete(EntidadBasePtr entidad)
 
     qry->bindValue(":idxColumn", _getters[_idxColumnName](entidad));
     return qry;
+}
+
+QStringList modelBase::headers()
+{
+    return _getters.keys();
+}
+
+QVariant modelBase::value(EntidadBasePtr entidad, const QString &field)
+{
+    return _getters[field](entidad);
+}
+
+QSqlDatabase &modelBase::database()
+{
+    return _database;
 }
