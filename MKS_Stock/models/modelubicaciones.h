@@ -12,11 +12,11 @@ class ModelUbicaciones : public modelBase
 public:
     explicit ModelUbicaciones(QSqlDatabase &database, QObject *parent = 0);
 
+    UbicacionPtr cast(EntidadBasePtr entidad);
 protected:
     virtual EntidadBasePtr internalCreateEntity(const QSqlRecord &record);
     virtual void mapFields();
 
-    UbicacionPtr cast(EntidadBasePtr entidad);
 
 signals:
 

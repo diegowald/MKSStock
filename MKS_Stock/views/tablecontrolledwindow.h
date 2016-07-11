@@ -24,6 +24,8 @@ public:
 private slots:
     void on_actionNuevo_triggered();
 
+    void on_table_doubleClicked(const QModelIndex &index);
+
 private:
     void llenarTabla(ResponsePtr response);
 private:

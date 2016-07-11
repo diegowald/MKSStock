@@ -6,7 +6,7 @@
 ControllerMovimientosStock::ControllerMovimientosStock(QObject *parent) :
     ControllerBase(ModelContainer::instance().model(MODELS::MOVIMIENTOS_STOCK), parent)
 {
-
+    _modelMovimientosStock = qSharedPointerDynamicCast<ModelMovimientosStock>(model());
 }
 
 EntidadBasePtr ControllerMovimientosStock::crearNuevaEntidad()
@@ -21,4 +21,16 @@ EntidadBasePtr ControllerMovimientosStock::crearNuevaEntidad()
     {
         return MovimientoStockPtr();
     }
+}
+
+bool ControllerMovimientosStock::editarEntidadExistente(EntidadBasePtr entidad)
+{
+    bool result = false;
+    MovimientoStockPtr m = _modelMovimientosStock->cast(entidad);
+    DialogMovimientoStock dlg(m);
+    if (dlg.exec() == QDialog::Accepted)
+    {
+        result = true;
+    }
+    return result;
 }

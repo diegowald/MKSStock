@@ -18,9 +18,12 @@ public:
     ResponsePtr get();
 
     void nuevaEntidad();
+    void editarEntidad(EntidadBasePtr entidad);
 
 protected:
     virtual EntidadBasePtr crearNuevaEntidad() = 0;
+    virtual bool editarEntidadExistente(EntidadBasePtr entidad) = 0;
+    modelBasePtr model();
 signals:
 
 public slots:

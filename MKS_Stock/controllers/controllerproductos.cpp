@@ -6,7 +6,7 @@
 ControllerProductos::ControllerProductos(QObject *parent) :
     ControllerBase(ModelContainer::instance().model(MODELS::PRODUCTOS), parent)
 {
-
+    _modelProductos = qSharedPointerDynamicCast<ModelProductos>(model());
 }
 
 EntidadBasePtr ControllerProductos::crearNuevaEntidad()
@@ -21,4 +21,16 @@ EntidadBasePtr ControllerProductos::crearNuevaEntidad()
     {
         return ProductoPtr();
     }
+}
+
+bool ControllerProductos::editarEntidadExistente(EntidadBasePtr entidad)
+{
+    bool result = false;
+    ProductoPtr p = _modelProductos->cast(entidad);
+    DlgProducto dlg(p);
+    if (dlg.exec() == QDialog::Accepted)
+    {
+        result = true;
+    }
+    return result;
 }

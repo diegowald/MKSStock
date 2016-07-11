@@ -11,7 +11,7 @@ EntidadBasePtr ModelUbicaciones::internalCreateEntity(const QSqlRecord &record)
 
 void ModelUbicaciones::mapFields()
 {
-    mapField("id", [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("id", 1, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->id();
     },
@@ -21,7 +21,7 @@ void ModelUbicaciones::mapFields()
     }
     );
 
-    mapField("nombre", [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("nombre", 2, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->nombre();
     },

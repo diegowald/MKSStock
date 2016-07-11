@@ -56,3 +56,10 @@ void TableControlledWindow::on_actionNuevo_triggered()
 {
     controller()->nuevaEntidad();
 }
+
+void TableControlledWindow::on_table_doubleClicked(const QModelIndex &index)
+{
+    QTableWidgetItem *item = ui->table->item(index.row(), index.column());
+    EntidadBasePtr entidad = item->data(Qt::UserRole).value<EntidadBasePtr>();
+    controller()->editarEntidad(entidad);
+}

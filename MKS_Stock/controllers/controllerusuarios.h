@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include "controllerbase.h"
+#include "models/modelusuarios.h"
+
 
 class ControllerUsuarios : public ControllerBase
 {
@@ -16,6 +18,10 @@ public slots:
     // ControllerBase interface
 protected:
     virtual EntidadBasePtr crearNuevaEntidad() override;
+    virtual bool editarEntidadExistente(EntidadBasePtr entidad) override;
+
+private:
+    ModelUsuariosPtr _modelUsuarios;
 };
 
 typedef QSharedPointer<ControllerUsuarios> ControllerUsuariosPtr;

@@ -11,11 +11,11 @@ class ModelUsuarios : public modelBase
 public:
     explicit ModelUsuarios(QSqlDatabase &database, QObject *parent = 0);
 
+    UsuarioPtr cast(EntidadBasePtr entidad);
 protected:
     virtual EntidadBasePtr internalCreateEntity(const QSqlRecord &record);
     virtual void mapFields();
 
-    UsuarioPtr cast(EntidadBasePtr entidad);
 signals:
 
 public slots:

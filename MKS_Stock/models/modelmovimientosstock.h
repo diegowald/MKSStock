@@ -12,11 +12,12 @@ public:
     explicit ModelMovimientosStock(QSqlDatabase &database, QObject *parent = 0);
 
     ResponsePtr getPorProducto(int idProducto);
+    MovimientoStockPtr cast(EntidadBasePtr entidad);
+
 protected:
     virtual EntidadBasePtr internalCreateEntity(const QSqlRecord &record);
     virtual void mapFields();
 
-    MovimientoStockPtr cast(EntidadBasePtr entidad);
 signals:
 
 public slots:

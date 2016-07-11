@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include "controllerbase.h"
+#include "models/modelproductos.h"
+
 
 class ControllerProductos : public ControllerBase
 {
@@ -15,6 +17,10 @@ signals:
 public slots:
 protected:
     virtual EntidadBasePtr crearNuevaEntidad() override;
+    virtual bool editarEntidadExistente(EntidadBasePtr entidad) override;
+
+private:
+    ModelProductosPtr _modelProductos;
 };
 
 typedef QSharedPointer<ControllerProductos> ControllerProductosPtr;

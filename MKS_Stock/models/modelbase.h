@@ -34,7 +34,7 @@ signals:
 public slots:
 
 protected:
-    void mapField(const QString &fieldName, GetFunction getter, SetFunction setter);
+    void mapField(const QString &fieldName, int order, GetFunction getter, SetFunction setter);
     virtual EntidadBasePtr internalCreateEntity(const QSqlRecord &record) = 0;
 
     QSqlDatabase &database();
@@ -51,6 +51,7 @@ private:
 
 
 private:
+    QMap<int, QString> _fieldOrder;
     QMap<QString, GetFunction> _getters;
     QMap<QString, SetFunction> _setters;
     QString _tableName;

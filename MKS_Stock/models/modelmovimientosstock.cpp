@@ -12,7 +12,7 @@ EntidadBasePtr ModelMovimientosStock::internalCreateEntity(const QSqlRecord &rec
 
 void ModelMovimientosStock::mapFields()
 {
-    mapField("id", [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("id", 1, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->id();
     },
@@ -22,7 +22,7 @@ void ModelMovimientosStock::mapFields()
     }
     );
 
-    mapField("idUsuario", [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("idUsuario", 2, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->idUsuario();
     },
@@ -33,7 +33,7 @@ void ModelMovimientosStock::mapFields()
     }
     );
 
-    mapField("idProducto", [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("idProducto", 3, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->idProducto();
     },
@@ -44,7 +44,7 @@ void ModelMovimientosStock::mapFields()
     }
     );
 
-    mapField("idUbicacion", [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("idUbicacion", 4, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->idUbicacion();
     },
@@ -55,7 +55,7 @@ void ModelMovimientosStock::mapFields()
     }
     );
 
-    mapField("idMovimientoAnterior", [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("idMovimientoAnterior", 5, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->idMovimientoAnterior();
     },
@@ -66,8 +66,7 @@ void ModelMovimientosStock::mapFields()
     }
     );
 
-    QDateTime _fechaHora;
-    mapField("fechaHora", [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("fechaHora", 6, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->fechaHora();
     },

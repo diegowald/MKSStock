@@ -38,3 +38,21 @@ void ControllerBase::nuevaEntidad()
         }
     }
 }
+
+void ControllerBase::editarEntidad(EntidadBasePtr entidad)
+{
+    if (editarEntidadExistente(entidad))
+    {
+        _model->persist(entidad);
+        foreach(ControlledView *v, _views)
+        {
+            v->refresh();
+        }
+    }
+}
+
+
+modelBasePtr ControllerBase::model()
+{
+    return _model;
+}

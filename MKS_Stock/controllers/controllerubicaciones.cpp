@@ -6,7 +6,7 @@
 ControllerUbicaciones::ControllerUbicaciones(QObject *parent) :
     ControllerBase(ModelContainer::instance().model(MODELS::UBICACIONES), parent)
 {
-
+    _modelUbicaciones = qSharedPointerDynamicCast<ModelUbicaciones>(model());
 }
 
 
@@ -22,4 +22,16 @@ EntidadBasePtr ControllerUbicaciones::crearNuevaEntidad()
     {
         return UbicacionPtr();
     }
+}
+
+bool ControllerUbicaciones::editarEntidadExistente(EntidadBasePtr entidad)
+{
+    bool result = false;
+    UbicacionPtr u = _modelUbicaciones->cast(entidad);
+    DlgUbicacion dlg(u);
+    if (dlg.exec() == QDialog::Accepted)
+    {
+        result = true;
+    }
+    return result;
 }

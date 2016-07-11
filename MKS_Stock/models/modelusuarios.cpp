@@ -14,7 +14,7 @@ EntidadBasePtr ModelUsuarios::internalCreateEntity(const QSqlRecord &record)
 
 void ModelUsuarios::mapFields()
 {
-    mapField("id", [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("id", 1, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->id();
     },
@@ -24,7 +24,7 @@ void ModelUsuarios::mapFields()
     }
     );
 
-    mapField("nombre", [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("nombre", 2, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->nombre();
     },
@@ -35,7 +35,7 @@ void ModelUsuarios::mapFields()
     }
     );
 
-    mapField("apellido", [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("apellido", 3, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->apellido();
     },
@@ -45,7 +45,7 @@ void ModelUsuarios::mapFields()
         return true;
     });
 
-    mapField("password", [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("password", 4, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->password();
     },

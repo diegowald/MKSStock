@@ -11,7 +11,7 @@ EntidadBasePtr ModelProductos::internalCreateEntity(const QSqlRecord &record)
 
 void ModelProductos::mapFields()
 {
-    mapField("id", [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("id", 1, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->id();
     },
@@ -21,7 +21,7 @@ void ModelProductos::mapFields()
     }
     );
 
-    mapField("nombre", [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("nombre", 2, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->nombre();
     },
@@ -32,7 +32,7 @@ void ModelProductos::mapFields()
     }
     );
 
-    mapField("descripcion", [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("descripcion", 3, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->descripcion();
     },

@@ -12,8 +12,9 @@ modelBase::modelBase(QSqlDatabase &database, const QString &tableName, const QSt
 }
 
 
-void modelBase::mapField(const QString &fieldName, GetFunction getter, SetFunction setter)
+void modelBase::mapField(const QString &fieldName, int order, GetFunction getter, SetFunction setter)
 {
+    _fieldOrder[order] = fieldName;
     _getters[fieldName] = getter;
     _setters[fieldName] = setter;
 }
@@ -169,7 +170,7 @@ QSqlQuery *modelBase::getQuery(EntidadBasePtr entidad)
 
 QStringList modelBase::getFieldNamesWithoutIdxColumnName()
 {
-    QSet<QString> flds = QSet<QString>::fromList(_getters.keys());
+    QSet<QString> flds = QSet<QString>::fromList(_fieldOrder.values());
 
     flds.remove(_idxColumnName);
     return flds.toList();
@@ -246,7 +247,7 @@ QSqlQuery *modelBase::crearDelete(EntidadBasePtr entidad)
 
 QStringList modelBase::headers()
 {
-    return _getters.keys();
+    return _fieldOrder.values();
 }
 
 QVariant modelBase::value(EntidadBasePtr entidad, const QString &field)

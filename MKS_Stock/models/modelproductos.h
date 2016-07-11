@@ -12,11 +12,11 @@ class ModelProductos : public modelBase
 public:
     explicit ModelProductos(QSqlDatabase &database, QObject *parent = 0);
 
+    ProductoPtr cast(EntidadBasePtr entidad);
 protected:
     virtual EntidadBasePtr internalCreateEntity(const QSqlRecord &record);
     virtual void mapFields();
 
-    ProductoPtr cast(EntidadBasePtr entidad);
 signals:
 
 public slots:

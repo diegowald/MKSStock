@@ -6,7 +6,7 @@
 ControllerUsuarios::ControllerUsuarios(QObject *parent) :
     ControllerBase(ModelContainer::instance().model(MODELS::USUARIOS), parent)
 {
-
+    _modelUsuarios = qSharedPointerDynamicCast<ModelUsuarios>(model());
 }
 
 
@@ -23,3 +23,16 @@ EntidadBasePtr ControllerUsuarios::crearNuevaEntidad()
         return UsuarioPtr();
     }
 }
+
+bool ControllerUsuarios::editarEntidadExistente(EntidadBasePtr entidad)
+{
+    bool result = false;
+    UsuarioPtr u = _modelUsuarios->cast(entidad);
+    DlgUsuario dlg(u);
+    if (dlg.exec() == QDialog::Accepted)
+    {
+        result = true;
+    }
+    return result;
+}
+
