@@ -5,7 +5,7 @@
 #include "models/modelusuarios.h"
 #include "models/modelubicaciones.h"
 #include "models/modelproductos.h"
-
+#include "models/modelmovimientosstock.h"
 
 ModelContainer *ModelContainer::_instance;
 
@@ -37,6 +37,9 @@ void ModelContainer::init()
 
     _models[MODELS::PRODUCTOS] = ModelProductosPtr::create(_database);
     _models[MODELS::PRODUCTOS]->mapFields();
+
+    _models[MODELS::MOVIMIENTOS_STOCK] = ModelMovimientosStockPtr::create(_database);
+    _models[MODELS::MOVIMIENTOS_STOCK]->mapFields();
 }
 
 ModelContainer &ModelContainer::instance()

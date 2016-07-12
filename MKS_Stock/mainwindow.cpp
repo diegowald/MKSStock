@@ -27,7 +27,7 @@ MainWindow::~MainWindow()
 void MainWindow::crearSubWindow(QWidget *wnd, const QString &windowName)
 {
     QMdiSubWindow *subWindow = ui->mdiArea->addSubWindow(wnd);
-    subWindow->setObjectName("Usuarios");
+    subWindow->setObjectName(windowName);
     wnd->setAttribute(Qt::WA_DeleteOnClose);
     subWindow->setWindowIcon(wnd->windowIcon());
     subWindow->show();
