@@ -55,10 +55,26 @@ void DialogMovimientoStock::llenarComboProductos()
 
 void DialogMovimientoStock::llenarComboUbicacionesExistente()
 {
+    ui->cboUbicacion->clear();
     int idProducto = ui->cboProducto->currentData(Qt::UserRole).toInt();
     ModelMovimientosStockPtr m = qSharedPointerDynamicCast<ModelMovimientosStock>(
                 ModelContainer::instance().model(MODELS::MOVIMIENTOS_STOCK));
     ResponsePtr existencia = m->getPorProducto(idProducto);
+    if (!existencia.isNull())
+    {
+        QList<int> idUbicaciones;
+        foreach (EntidadBasePtr e, existencia->list())
+        {
+            MovimientoStockPtr ms = m->cast(e);
+            idUbicaciones.append(ms->idUbicacion());
+        }
+        ResponsePtr ubicaciones = ModelContainer::instance().model(MODELS::UBICACIONES)->get(idUbicaciones);
+        foreach (EntidadBasePtr e, ubicaciones->list())
+        {
+            UbicacionPtr u = qSharedPointerDynamicCast<Ubicacion>(e);
+            ui->cboUbicacion->addItem(u->nombre(), u->id());
+        }
+    }
 }
 
 void DialogMovimientoStock::llenarComboUbicaciones()

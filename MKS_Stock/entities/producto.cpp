@@ -27,9 +27,11 @@ QString Producto::descripcion() const
 void Producto::setNombre(const QString &value)
 {
     _nombre = value;
+    updateStatus();
 }
 
 void Producto::setDescripcion(const QString &value)
 {
     _descripcion = value;
+    updateStatus();
 }
