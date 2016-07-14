@@ -9,20 +9,23 @@ enum class StatusEntidad
     SIN_CAMBIOS,
     NUEVO,
     MODIFICADO,
-    BORRADO
+    BORRADO,
+    INICIALIZANDO
 };
 
 class EntidadBase : public QObject
 {
     Q_OBJECT
 public:
-    explicit EntidadBase(const QSqlRecord &record, QObject *parent = 0);
     explicit EntidadBase(QObject *parent = 0);
 
     int id() const;
 
+    void setId(int value);
     StatusEntidad status() const;
 
+    void beginInitialize();
+    void endInitialize();
 protected:
     void updateStatus(StatusEntidad newStatus = StatusEntidad::MODIFICADO);
 

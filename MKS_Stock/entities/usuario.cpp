@@ -9,13 +9,6 @@ Usuario::Usuario(QObject *parent) : EntidadBase(parent)
     _password = "";
 }
 
-Usuario::Usuario(const QSqlRecord &record, QObject *parent) : EntidadBase(record, parent)
-{
-    _nombre = record.value("nombre").toString();
-    _apellido = record.value("apellido").toString();
-    _password = record.value("password").toString();
-}
-
 QString Usuario::nombre() const
 {
     return _nombre;

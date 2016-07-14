@@ -20,12 +20,14 @@ public:
 
 
     ResponsePtr get();
+    ResponsePtr get(int id);
     ResponsePtr get(QList<int> &ids);
     ResponsePtr get(QSqlQuery &qry);
     void persist(EntidadBasePtr entidad);
     void persist(QList<EntidadBasePtr> &list);
 
     QStringList headers();
+    QString displayHeader(const QString &fieldName) const;
     QVariant value(EntidadBasePtr entidad, const QString &field);
 
     virtual void mapFields() = 0;
@@ -34,8 +36,8 @@ signals:
 public slots:
 
 protected:
-    void mapField(const QString &fieldName, int order, GetFunction getter, SetFunction setter);
-    virtual EntidadBasePtr internalCreateEntity(const QSqlRecord &record) = 0;
+    void mapField(const QString &fieldName, int order, const QString &displayFieldName, bool isVisible, bool persistOnDB, GetFunction getter, SetFunction setter);
+    virtual EntidadBasePtr internalCreateEntity() = 0;
 
     QSqlDatabase &database();
 
@@ -51,9 +53,20 @@ private:
 
 
 private:
+    class Field
+    {
+    public:
+        GetFunction _getter;
+        SetFunction _setter;
+        QString _displayName;
+        bool _isVisible;
+        bool _persistOnDB;
+    };
+    typedef QSharedPointer<Field> FieldPtr;
+
     QMap<int, QString> _fieldOrder;
-    QMap<QString, GetFunction> _getters;
-    QMap<QString, SetFunction> _setters;
+    QMap<QString, FieldPtr> _fields;
+
     QString _tableName;
     QString _idxColumnName;
 

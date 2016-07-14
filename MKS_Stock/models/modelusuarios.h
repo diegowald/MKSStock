@@ -13,7 +13,7 @@ public:
 
     UsuarioPtr cast(EntidadBasePtr entidad);
 protected:
-    virtual EntidadBasePtr internalCreateEntity(const QSqlRecord &record);
+    virtual EntidadBasePtr internalCreateEntity();
     virtual void mapFields();
 
 signals:

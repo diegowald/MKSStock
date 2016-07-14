@@ -6,6 +6,8 @@
 #include "entities/producto.h"
 #include "entities/ubicacion.h"
 
+
+
 DialogMovimientoStock::DialogMovimientoStock(MovimientoStockPtr movimientoStock, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogMovimientoStock)
@@ -17,10 +19,21 @@ DialogMovimientoStock::DialogMovimientoStock(MovimientoStockPtr movimientoStock,
     llenarComboProductos();
     ui->cboProducto->setCurrentIndex(ui->cboProducto->findData(_movimientoStock->idProducto(), Qt::UserRole));
     ui->cboUbicacion->setCurrentIndex(ui->cboUbicacion->findData(_movimientoStock->idUbicacion(), Qt::UserRole));
-    ui->txtExistencia->setText(QString::number(_movimientoStockAnterior->cantidad()));
-    ui->spinCantidad->setMinimum(1);
-    ui->spinCantidad->setMaximum(_movimientoStockAnterior->cantidad());
-    ui->spinCantidad->setValue(_movimientoStockAnterior->cantidad());
+    llenarComboUbicaciones();
+    if (!_movimientoStockAnterior.isNull())
+    {
+        ui->txtExistencia->setText(QString::number(_movimientoStockAnterior->cantidad()));
+        ui->spinCantidad->setMinimum(1);
+        ui->spinCantidad->setMaximum(_movimientoStockAnterior->cantidad());
+        ui->spinCantidad->setValue(_movimientoStockAnterior->cantidad());
+    }
+    else
+    {
+        ui->txtExistencia->setText(QString::number(0));
+        ui->spinCantidad->setMinimum(1);
+        ui->spinCantidad->setMaximum(100);
+        ui->spinCantidad->setValue(1);
+    }
 }
 
 DialogMovimientoStock::~DialogMovimientoStock()
@@ -56,6 +69,7 @@ void DialogMovimientoStock::llenarComboProductos()
 void DialogMovimientoStock::llenarComboUbicacionesExistente()
 {
     ui->cboUbicacion->clear();
+    _movimientosAnterioresPorUbicacion.clear();
     int idProducto = ui->cboProducto->currentData(Qt::UserRole).toInt();
     ModelMovimientosStockPtr m = qSharedPointerDynamicCast<ModelMovimientosStock>(
                 ModelContainer::instance().model(MODELS::MOVIMIENTOS_STOCK));
@@ -67,6 +81,7 @@ void DialogMovimientoStock::llenarComboUbicacionesExistente()
         {
             MovimientoStockPtr ms = m->cast(e);
             idUbicaciones.append(ms->idUbicacion());
+            _movimientosAnterioresPorUbicacion[ms->idUbicacion()] = ms;
         }
         ResponsePtr ubicaciones = ModelContainer::instance().model(MODELS::UBICACIONES)->get(idUbicaciones);
         foreach (EntidadBasePtr e, ubicaciones->list())
@@ -86,4 +101,10 @@ void DialogMovimientoStock::llenarComboUbicaciones()
         UbicacionPtr ub = qSharedPointerDynamicCast<Ubicacion>(u);
         ui->cboNuevaUbicacion->addItem(ub->nombre(), ub->id());
     }
+}
+
+void DialogMovimientoStock::on_cboUbicacion_currentIndexChanged(int index)
+{
+    int idUbicacion = ui->cboUbicacion->currentData(Qt::UserRole).toInt();
+    _movimientoStockAnterior = _movimientosAnterioresPorUbicacion[idUbicacion];
 }

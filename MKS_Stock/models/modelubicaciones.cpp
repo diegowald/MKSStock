@@ -4,24 +4,25 @@ ModelUbicaciones::ModelUbicaciones(QSqlDatabase &database, QObject *parent) : mo
 {
 }
 
-EntidadBasePtr ModelUbicaciones::internalCreateEntity(const QSqlRecord &record)
+EntidadBasePtr ModelUbicaciones::internalCreateEntity()
 {
-    return UbicacionPtr::create(record);
+    return UbicacionPtr::create();
 }
 
 void ModelUbicaciones::mapFields()
 {
-    mapField("id", 1, [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("id", 1, "#", true, true, [&] (EntidadBasePtr entidad) -> QVariant
     {
-        return cast(entidad)->id();
+        return entidad->id();
     },
     [&] (EntidadBasePtr entidad, const QVariant &value) -> bool
     {
+        entidad->setId(value.toInt());
         return true;
     }
     );
 
-    mapField("nombre", 2, [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("nombre", 2, "Nombre", true, true, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->nombre();
     },

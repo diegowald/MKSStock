@@ -16,6 +16,11 @@ QStringList ControllerBase::headers()
     return _model->headers();
 }
 
+QString ControllerBase::displayHeader(const QString &fieldName) const
+{
+    return _model->displayHeader(fieldName);
+}
+
 QVariant ControllerBase::value(EntidadBasePtr entidad, const QString &field)
 {
     return _model->value(entidad, field);

@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include "entities/movimientostock.h"
+#include <QMap>
+
 
 namespace Ui {
 class DialogMovimientoStock;
@@ -27,10 +29,13 @@ private slots:
 
     void on_cboProducto_currentIndexChanged(int index);
 
+    void on_cboUbicacion_currentIndexChanged(int index);
+
 private:
     Ui::DialogMovimientoStock *ui;
     MovimientoStockPtr _movimientoStock;
     MovimientoStockPtr _movimientoStockAnterior;
+    QMap<int, MovimientoStockPtr> _movimientosAnterioresPorUbicacion;
 };
 
 #endif // DIALOGMOVIMIENTOSTOCK_H

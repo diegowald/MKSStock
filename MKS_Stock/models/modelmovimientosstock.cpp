@@ -1,28 +1,32 @@
 #include "modelmovimientosstock.h"
 #include <QSqlQuery>
+#include "entities/ubicacion.h"
+#include "entities/usuario.h"
+#include "entities/producto.h"
 
 ModelMovimientosStock::ModelMovimientosStock(QSqlDatabase &database, QObject *parent) : modelBase(database, "movimientosStock", "id", parent)
 {
 }
 
-EntidadBasePtr ModelMovimientosStock::internalCreateEntity(const QSqlRecord &record)
+EntidadBasePtr ModelMovimientosStock::internalCreateEntity()
 {
-    return MovimientoStockPtr::create(record);
+    return MovimientoStockPtr::create();
 }
 
 void ModelMovimientosStock::mapFields()
 {
-    mapField("id", 1, [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("id", 1, "#", true, true, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->id();
     },
     [&] (EntidadBasePtr entidad, const QVariant &value) -> bool
     {
+        entidad->setId(value.toInt());
         return true;
     }
     );
 
-    mapField("idUsuario", 2, [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("idUsuario", 2, "", false, true, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->idUsuario();
     },
@@ -33,7 +37,7 @@ void ModelMovimientosStock::mapFields()
     }
     );
 
-    mapField("idProducto", 3, [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("idProducto", 3, "", false, true, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->idProducto();
     },
@@ -44,7 +48,7 @@ void ModelMovimientosStock::mapFields()
     }
     );
 
-    mapField("idUbicacion", 4, [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("idUbicacion", 4, "", false, true, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->idUbicacion();
     },
@@ -55,7 +59,7 @@ void ModelMovimientosStock::mapFields()
     }
     );
 
-    mapField("idMovimientoAnterior", 5, [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("idMovimientoAnterior", 5, "", false, true, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->idMovimientoAnterior();
     },
@@ -66,7 +70,7 @@ void ModelMovimientosStock::mapFields()
     }
     );
 
-    mapField("fechaHora", 6, [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("fechaHora", 6, "Fecha", true, true, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->fechaHora();
     },
@@ -76,6 +80,110 @@ void ModelMovimientosStock::mapFields()
         return true;
     }
     );
+
+    mapField("usuario", 7, "Usuario", false, false, [&] (EntidadBasePtr entidad) -> QVariant
+    {
+        return QVariant::fromValue(cast(entidad)->usuario());
+    },
+    [&] (EntidadBasePtr entidad, const QVariant &value) -> bool
+    {
+        cast(entidad)->setUsuario(value.value<UsuarioPtr>());
+        return true;
+    });
+
+    mapField("Producto", 8, "Producto", false, false, [&] (EntidadBasePtr entidad) -> QVariant
+    {
+        return QVariant::fromValue(cast(entidad)->producto());
+    },
+    [&] (EntidadBasePtr entidad, const QVariant &value) -> bool
+    {
+        cast(entidad)->setProducto(value.value<ProductoPtr>());
+        return true;
+    });
+
+    mapField("Ubicacion", 9, "Ubicacion", false, false, [&] (EntidadBasePtr entidad) -> QVariant
+    {
+        return QVariant::fromValue(cast(entidad)->ubicacion());
+    },
+    [&] (EntidadBasePtr entidad, const QVariant &value) -> bool
+    {
+        cast(entidad)->setUbicacion(value.value<UbicacionPtr>());
+        return true;
+    });
+
+    mapField("Movimiento Anterior", 10, "Movimiento Anterior", false, false, [&] (EntidadBasePtr entidad) -> QVariant
+    {
+        return QVariant::fromValue(cast(entidad)->movimientoAnterior());
+    },
+    [&] (EntidadBasePtr entidad, const QVariant &value) -> bool
+    {
+        cast(entidad)->setMovimientoAnterior(value.value<MovimientoStockPtr>());
+        return true;
+    });
+
+    mapField("nombreUsuario", 11, "Usuario", true, false, [&] (EntidadBasePtr entidad) -> QVariant
+    {
+        UsuarioPtr usuario = cast(entidad)->usuario();
+        QString s = "";
+        if (!usuario.isNull())
+        {
+            QString tmp = "%1 %2";
+            s = tmp.arg(usuario->nombre()).arg(usuario->apellido());
+        }
+        return s;
+    },
+    [&] (EntidadBasePtr entidad, const QVariant &value) -> bool
+    {
+        return true;
+    });
+
+    mapField("nombreProducto", 12, "Producto", true, false, [&] (EntidadBasePtr entidad) -> QVariant
+    {
+        ProductoPtr producto = cast(entidad)->producto();
+        return producto.isNull() ? "" : producto->nombre();
+    },
+    [&] (EntidadBasePtr entidad, const QVariant &value) -> bool
+    {
+        return true;
+    });
+
+    mapField("nombreUbicacion", 13, "Ubicacion", true, false, [&] (EntidadBasePtr entidad) -> QVariant
+    {
+        UbicacionPtr ubicacion = cast(entidad)->ubicacion();
+        return ubicacion.isNull() ? "" : ubicacion->nombre();
+    },
+    [&] (EntidadBasePtr entidad, const QVariant &value) -> bool
+    {
+        cast(entidad)->setUbicacion(value.value<UbicacionPtr>());
+        return true;
+    });
+
+    mapField("nombreMovimientoAnterior", 14, "Movimiento Anterior", true, false, [&] (EntidadBasePtr entidad) -> QVariant
+    {
+        QString s = "";
+        MovimientoStockPtr mov = cast(entidad)->movimientoAnterior();
+        if (!mov.isNull())
+        {
+            QString tmp = "%1 : %2 (%3)";
+            QString fecha;
+            if (mov->fechaHora().date() == QDate::currentDate())
+            {
+                fecha = mov->fechaHora().toString("hh:mm");
+            }
+            else
+            {
+                fecha = mov->fechaHora().toString("dd/MM/yyyy");
+            }
+            QString ubicacion = mov->ubicacion().isNull() ? "" : mov->ubicacion()->nombre();
+
+            s = tmp.arg(fecha).arg(ubicacion).arg(mov->cantidad());
+        }
+        return s;
+    },
+    [&] (EntidadBasePtr entidad, const QVariant &value) -> bool
+    {
+        return true;
+    });
 }
 
 MovimientoStockPtr ModelMovimientosStock::cast(EntidadBasePtr entidad)
@@ -87,11 +195,11 @@ ResponsePtr ModelMovimientosStock::getPorProducto(int idProducto)
 {
     QSqlQuery query(database());
 
-    QString sql =
-    "select * from movimientosStock left join (select idMovimientoAnterior, "
+    QString sql = corregir la consutla para que devuelva resultados.
+    "select movimientosStock.* from movimientosStock left join (select idMovimientoAnterior, "
     "sum(cantidad) as cantidadQuitada from movimientosStock "
     "group by idMovimientoAnterior) m1 on "
-    "movimientosStock.id = m1.idMovimientoAnterior where cantidad - cantidadQuitada > 0 "
+    "movimientosStock.id = m1.idMovimientoAnterior where (cantidad - cantidadQuitada > 0 or cantidadQuitada is null) "
     "and movimientosStock.idProducto = :idProducto;";
     query.prepare(sql);
 

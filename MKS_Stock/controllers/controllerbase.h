@@ -14,6 +14,7 @@ public:
     void addView(ControlledView *view);
 
     QStringList headers();
+    QString displayHeader(const QString &fieldName) const;
     QVariant value(EntidadBasePtr entidad, const QString &field);
     ResponsePtr get();
 

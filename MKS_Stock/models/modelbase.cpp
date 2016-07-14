@@ -12,16 +12,24 @@ modelBase::modelBase(QSqlDatabase &database, const QString &tableName, const QSt
 }
 
 
-void modelBase::mapField(const QString &fieldName, int order, GetFunction getter, SetFunction setter)
+void modelBase::mapField(const QString &fieldName, int order, const QString &displayFieldName, bool isVisible, bool persistOnDB, GetFunction getter, SetFunction setter)
 {
     _fieldOrder[order] = fieldName;
-    _getters[fieldName] = getter;
-    _setters[fieldName] = setter;
+
+    FieldPtr field = FieldPtr::create();
+    field->_getter = getter;
+    field->_setter = setter;
+    field->_displayName = displayFieldName;
+    field->_isVisible = isVisible;
+    field->_persistOnDB = persistOnDB;
+
+    _fields[fieldName] = field;
+
 }
 
 ResponsePtr modelBase::get(QSqlQuery &qry)
 {
-    ResponsePtr response;
+    ResponsePtr response = ResponsePtr::create(-1, -1, -1, 0, this);
 
     if (!_database.isOpen())
     {
@@ -35,7 +43,8 @@ ResponsePtr modelBase::get(QSqlQuery &qry)
 
     while (qry.next())
     {
-        response->list().append(createEntity(qry.record()));
+        EntidadBasePtr entidad = createEntity(qry.record());
+        response->list().append(entidad);
     }
 
     return response;
@@ -74,6 +83,13 @@ ResponsePtr modelBase::get()
     return response;
 }
 
+ResponsePtr modelBase::get(int id)
+{
+    QList<int> ids;
+    ids.append(id);
+    return get(ids);
+}
+
 ResponsePtr modelBase::get(QList<int> &ids)
 {
     QSqlQuery query(_database);
@@ -89,7 +105,7 @@ ResponsePtr modelBase::get(QList<int> &ids)
         sIds.append(QString::number(id));
     }
 
-    QString sql = "SELECT COUNT(*) from %1 where %2 in %3";
+    QString sql = "SELECT COUNT(*) from %1 where %2 in (%3)";
     sql = sql.arg(_tableName).arg(_idxColumnName).arg(sIds.join(", "));
     query.exec(sql);
 
@@ -98,7 +114,7 @@ ResponsePtr modelBase::get(QList<int> &ids)
 
     ResponsePtr response = ResponsePtr::create(total, -1, -1, 0, this);
 
-    sql = "SELECT * from %1 where %2 in %3;";
+    sql = "SELECT * from %1 where %2 in (%3);";
     sql = sql.arg(_tableName).arg(_idxColumnName).arg(sIds.join(", "));
 
     query.exec(sql);
@@ -115,7 +131,18 @@ ResponsePtr modelBase::get(QList<int> &ids)
 
 EntidadBasePtr modelBase::createEntity(const QSqlRecord &record)
 {
-    return internalCreateEntity(record);
+    EntidadBasePtr entidad = internalCreateEntity();
+    entidad->beginInitialize();
+    foreach(QString key, _fields.keys())
+    {
+        FieldPtr field = _fields[key];
+        if (field->_persistOnDB)
+        {
+            field->_setter(entidad, record.value(key));
+        }
+    }
+    entidad->endInitialize();
+    return entidad;
 }
 
 void modelBase::persist(EntidadBasePtr entidad)
@@ -196,7 +223,7 @@ QSqlQuery *modelBase::crearInsert(EntidadBasePtr entidad)
     qry->prepare(sql);
     foreach(QString fld, flds)
     {
-        qry->bindValue(":" + fld, _getters[fld](entidad));
+        qry->bindValue(":" + fld, _fields[fld]->_getter(entidad));
     }
     return qry;
 }
@@ -223,10 +250,10 @@ QSqlQuery *modelBase::crearUpdate(EntidadBasePtr entidad)
     qry->prepare(sql);
     foreach(QString fld, flds)
     {
-        qry->bindValue(":" + fld, _getters[fld](entidad));
+        qry->bindValue(":" + fld, _fields[fld]->_getter(entidad));
     }
 
-    qry->bindValue(":idxColumn", _getters[_idxColumnName](entidad));
+    qry->bindValue(":idxColumn", _fields[_idxColumnName]->_getter(entidad));
     return qry;
 }
 
@@ -241,18 +268,30 @@ QSqlQuery *modelBase::crearDelete(EntidadBasePtr entidad)
     QSqlQuery *qry = new QSqlQuery(_database);
     qry->prepare(sql);
 
-    qry->bindValue(":idxColumn", _getters[_idxColumnName](entidad));
+    qry->bindValue(":idxColumn", _fields[_idxColumnName]->_getter(entidad));
     return qry;
 }
 
 QStringList modelBase::headers()
 {
-    return _fieldOrder.values();
+    QStringList response;
+    foreach(QString key, _fieldOrder.values())
+    {
+        if (_fields[key]->_isVisible)
+            response.append(key);
+    }
+
+    return response;
+}
+
+QString modelBase::displayHeader(const QString &fieldName) const
+{
+    return _fields[fieldName]->_displayName;
 }
 
 QVariant modelBase::value(EntidadBasePtr entidad, const QString &field)
 {
-    return _getters[field](entidad);
+    return _fields[field]->_getter(entidad);
 }
 
 QSqlDatabase &modelBase::database()

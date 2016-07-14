@@ -8,17 +8,14 @@ EntidadBase::EntidadBase(QObject *parent) : QObject(parent)
     _status = StatusEntidad::NUEVO;
 }
 
-
-
-EntidadBase::EntidadBase(const QSqlRecord &record, QObject *parent) : QObject(parent)
-{
-    _id = record.value("id").toInt();
-    _status = StatusEntidad::SIN_CAMBIOS;
-}
-
 int EntidadBase::id() const
 {
     return _id;
+}
+
+void EntidadBase::setId(int value)
+{
+    _id = value;
 }
 
 StatusEntidad EntidadBase::status() const
@@ -28,8 +25,14 @@ StatusEntidad EntidadBase::status() const
 
 void EntidadBase::updateStatus(StatusEntidad newStatus)
 {
+    if (_status == StatusEntidad::INICIALIZANDO)
+        return;
+
     switch (newStatus)
     {
+    case StatusEntidad::INICIALIZANDO:
+        _status = newStatus;
+        break;
     case StatusEntidad::SIN_CAMBIOS:
         _status = newStatus;
         break;
@@ -43,4 +46,14 @@ void EntidadBase::updateStatus(StatusEntidad newStatus)
         _status = _status == StatusEntidad::NUEVO ? StatusEntidad::SIN_CAMBIOS : newStatus;
         break;
     }
+}
+
+void EntidadBase::beginInitialize()
+{
+    _status = StatusEntidad::INICIALIZANDO;
+}
+
+void EntidadBase::endInitialize()
+{
+    _status = StatusEntidad::SIN_CAMBIOS;
 }

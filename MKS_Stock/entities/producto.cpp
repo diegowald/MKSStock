@@ -8,12 +8,6 @@ Producto::Producto(QObject *parent) : EntidadBase(parent)
     _descripcion = "";
 }
 
-Producto::Producto(const QSqlRecord &record, QObject *parent) : EntidadBase(record, parent)
-{
-    _nombre = record.value("nombre").toString();
-    _descripcion = record.value("descripcion").toString();
-}
-
 QString Producto::nombre() const
 {
     return _nombre;

@@ -1,0 +1,18 @@
+QMAKE_DEFAULT_INCDIRS = \
+    /home/diego/opt/gcc-4.7-linaro-rpi-gnueabihf/arm-linux-gnueabihf/include/c++/4.7.2 \
+    /home/diego/opt/gcc-4.7-linaro-rpi-gnueabihf/arm-linux-gnueabihf/include/c++/4.7.2/arm-linux-gnueabihf \
+    /home/diego/opt/gcc-4.7-linaro-rpi-gnueabihf/arm-linux-gnueabihf/include/c++/4.7.2/backward \
+    /home/diego/opt/gcc-4.7-linaro-rpi-gnueabihf/lib/gcc/arm-linux-gnueabihf/4.7.2/include \
+    /home/diego/opt/gcc-4.7-linaro-rpi-gnueabihf/lib/gcc/arm-linux-gnueabihf/4.7.2/include-fixed \
+    /home/diego/opt/gcc-4.7-linaro-rpi-gnueabihf/arm-linux-gnueabihf/include \
+    /mnt/rasp-pi-rootfs/usr/include \
+    /mnt/rasp-pi-rootfs/usr/include/arm-linux-gnueabihf
+QMAKE_DEFAULT_LIBDIRS = \
+    /home/diego/opt/gcc-4.7-linaro-rpi-gnueabihf/lib/gcc/arm-linux-gnueabihf/4.7.2 \
+    /home/diego/opt/gcc-4.7-linaro-rpi-gnueabihf/lib/gcc \
+    /home/diego/opt/gcc-4.7-linaro-rpi-gnueabihf/lib/gcc/arm-linux-gnueabihf \
+    /home/diego/opt/gcc-4.7-linaro-rpi-gnueabihf/arm-linux-gnueabihf/lib \
+    /mnt/rasp-pi-rootfs/lib \
+    /mnt/rasp-pi-rootfs/lib/arm-linux-gnueabihf \
+    /mnt/rasp-pi-rootfs/usr/lib \
+    /mnt/rasp-pi-rootfs/usr/lib/arm-linux-gnueabihf

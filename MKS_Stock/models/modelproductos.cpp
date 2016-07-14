@@ -4,24 +4,25 @@ ModelProductos::ModelProductos(QSqlDatabase &database, QObject *parent) : modelB
 {
 }
 
-EntidadBasePtr ModelProductos::internalCreateEntity(const QSqlRecord &record)
+EntidadBasePtr ModelProductos::internalCreateEntity()
 {
-    return ProductoPtr::create(record);
+    return ProductoPtr::create();
 }
 
 void ModelProductos::mapFields()
 {
-    mapField("id", 1, [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("id", 1, "#", true, true, [&] (EntidadBasePtr entidad) -> QVariant
     {
-        return cast(entidad)->id();
+        return entidad->id();
     },
     [&] (EntidadBasePtr entidad, const QVariant &value) -> bool
     {
+        entidad->setId(value.toInt());
         return true;
     }
     );
 
-    mapField("nombre", 2, [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("nombre", 2, "Nombre", true, true, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->nombre();
     },
@@ -32,7 +33,7 @@ void ModelProductos::mapFields()
     }
     );
 
-    mapField("descripcion", 3, [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("descripcion", 3, "Descripcion", true, true, [&] (EntidadBasePtr entidad) -> QVariant
     {
         return cast(entidad)->descripcion();
     },

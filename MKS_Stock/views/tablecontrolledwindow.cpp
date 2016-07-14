@@ -25,11 +25,14 @@ void TableControlledWindow::llenarTabla(ResponsePtr response)
 
     QStringList headers = controller()->headers();
     ui->table->setColumnCount(headers.count());
-/*    headers.append("#");
-    headers.append("Nombre");
-    headers.append("Apellido");*/
 
-    ui->table->setHorizontalHeaderLabels(headers);
+    QStringList displayHeaders;
+    foreach(QString header, headers)
+    {
+        displayHeaders.append(controller()->displayHeader(header));
+    }
+
+    ui->table->setHorizontalHeaderLabels(displayHeaders);
     foreach(auto entidad, list)
     {
         int row = ui->table->rowCount();

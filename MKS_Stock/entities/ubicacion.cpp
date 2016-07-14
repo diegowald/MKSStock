@@ -7,11 +7,6 @@ Ubicacion::Ubicacion(QObject *parent) : EntidadBase(parent)
     _nombre = "";
 }
 
-Ubicacion::Ubicacion(const QSqlRecord &record, QObject *parent) : EntidadBase(record, parent)
-{
-    _nombre = record.value("nombre").toString();
-}
-
 QString Ubicacion::nombre() const
 {
     return _nombre;
