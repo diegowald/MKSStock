@@ -195,12 +195,10 @@ ResponsePtr ModelMovimientosStock::getPorProducto(int idProducto)
 {
     QSqlQuery query(database());
 
-    QString sql = corregir la consutla para que devuelva resultados.
-    "select movimientosStock.* from movimientosStock left join (select idMovimientoAnterior, "
-    "sum(cantidad) as cantidadQuitada from movimientosStock "
-    "group by idMovimientoAnterior) m1 on "
-    "movimientosStock.id = m1.idMovimientoAnterior where (cantidad - cantidadQuitada > 0 or cantidadQuitada is null) "
-    "and movimientosStock.idProducto = :idProducto;";
+    QString sql = "select ms.id, ms.fechaHora, ms.idUsuario, ms.idProducto, ms.idUbicacion, ms.idMovimientoAnterior, ms.cantidad - ifnull(qty,0) as cantidad "
+                  " from movimientosStock ms left join (select idMovimientoAnterior, sum(ifnull(cantidad, 0)) as qty from movimientosStock group by idMovimientoAnterior) t1 "
+                  " on ms.id = t1.idMovimientoAnterior where ms.idProducto = :idProducto;";
+
     query.prepare(sql);
 
     query.bindValue(":idProducto", idProducto);
