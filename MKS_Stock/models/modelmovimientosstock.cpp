@@ -158,7 +158,17 @@ void ModelMovimientosStock::mapFields()
         return true;
     });
 
-    mapField("nombreMovimientoAnterior", 14, "Movimiento Anterior", true, false, [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("cantidad", 14, "Cantidad", true, true, [&] (EntidadBasePtr entidad) -> QVariant
+    {
+        return cast(entidad)->cantidad();
+    },
+    [&] (EntidadBasePtr entidad, const QVariant &value) -> bool
+    {
+        cast(entidad)->setCantidad(value.toDouble());
+        return true;
+    });
+
+    mapField("nombreMovimientoAnterior", 15, "Movimiento Anterior", true, false, [&] (EntidadBasePtr entidad) -> QVariant
     {
         QString s = "";
         MovimientoStockPtr mov = cast(entidad)->movimientoAnterior();
@@ -195,7 +205,7 @@ ResponsePtr ModelMovimientosStock::getPorProducto(int idProducto)
 {
     QSqlQuery query(database());
 
-    QString sql = corregir la consutla para que devuelva resultados.
+    QString sql = //corregir la consutla para que devuelva resultados.
     "select movimientosStock.* from movimientosStock left join (select idMovimientoAnterior, "
     "sum(cantidad) as cantidadQuitada from movimientosStock "
     "group by idMovimientoAnterior) m1 on "

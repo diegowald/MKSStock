@@ -197,10 +197,20 @@ QSqlQuery *modelBase::getQuery(EntidadBasePtr entidad)
 
 QStringList modelBase::getFieldNamesWithoutIdxColumnName()
 {
-    QSet<QString> flds = QSet<QString>::fromList(_fieldOrder.values());
+    QStringList response;
+    foreach (QString key, _fields.keys())
+    {
+        if (key != _idxColumnName)
+        {
+            FieldPtr field = _fields[key];
+            if (field->_persistOnDB)
+            {
+                response.append(key);
+            }
+        }
+    }
 
-    flds.remove(_idxColumnName);
-    return flds.toList();
+    return response;
 }
 
 QSqlQuery *modelBase::crearInsert(EntidadBasePtr entidad)
