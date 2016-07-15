@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     controllers/controllerubicaciones.cpp \
     controllers/controllerusuarios.cpp \
     controllers/controllerproductos.cpp \
-    controllers/controllermovimientosstock.cpp
+    controllers/controllermovimientosstock.cpp \
+    views/stockcontrolledwindow.cpp
 
 HEADERS  += mainwindow.h \
     entities/usuario.h \
@@ -63,7 +64,8 @@ HEADERS  += mainwindow.h \
     controllers/controllerubicaciones.h \
     controllers/controllerusuarios.h \
     controllers/controllerproductos.h \
-    controllers/controllermovimientosstock.h
+    controllers/controllermovimientosstock.h \
+    views/stockcontrolledwindow.h
 
 FORMS    += mainwindow.ui \
     views/windowusuarios.ui \
@@ -71,7 +73,8 @@ FORMS    += mainwindow.ui \
     views/dlgproducto.ui \
     views/dlgubicacion.ui \
     views/dialogmovimientostock.ui \
-    views/tablecontrolledwindow.ui
+    views/tablecontrolledwindow.ui \
+    views/stockcontrolledwindow.ui
 
 CONFIG += mobility
 MOBILITY =

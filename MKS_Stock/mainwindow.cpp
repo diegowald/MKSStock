@@ -5,6 +5,7 @@
 #include "models/modelcontainer.h"
 #include "views/windowusuarios.h"
 #include "views/tablecontrolledwindow.h"
+#include "views/stockcontrolledwindow.h"
 #include "controllers/controllerubicaciones.h"
 #include "controllers/controllerusuarios.h"
 #include "controllers/controllerproductos.h"
@@ -30,11 +31,19 @@ void MainWindow::crearSubWindow(QWidget *wnd, const QString &windowName)
     subWindow->setObjectName(windowName);
     wnd->setAttribute(Qt::WA_DeleteOnClose);
     subWindow->setWindowIcon(wnd->windowIcon());
+    subWindow->setWindowTitle(windowName);
     subWindow->show();
 }
 
 void MainWindow::on_actionStock_triggered()
 {
+    if (!_controllers.contains("movimientosStock"))
+    {
+        _controllers["movimientosStock"] = ControllerMovimientosStockPtr::create();
+    }
+    StockControlledWindow *wnd = new StockControlledWindow (this);
+    _controllers["movimientosStock"]->addView(wnd);
+    crearSubWindow(wnd, "Stock");
 }
 
 void MainWindow::on_actionUsuarios_triggered()

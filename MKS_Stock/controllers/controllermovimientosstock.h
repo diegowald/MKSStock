@@ -13,6 +13,10 @@ class ControllerMovimientosStock : public ControllerBase
 public:
     explicit ControllerMovimientosStock(QObject *parent = 0);
 
+    ResponsePtr existenciaProducto(int idProducto);
+    ResponsePtr existenciaProductoUbicacion(int idProducto, int idUbicacion);
+    ResponsePtr existenciaUbicacion(int idUbicacion);
+    ResponsePtr existencia();
 signals:
 
 public slots:

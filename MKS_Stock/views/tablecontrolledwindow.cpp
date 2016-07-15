@@ -1,7 +1,6 @@
 #include "tablecontrolledwindow.h"
 #include "ui_tablecontrolledwindow.h"
 #include <QTableWidgetItem>
-#include "entities/usuario.h"
 #include "controllers/controllerbase.h"
 
 
@@ -51,8 +50,8 @@ void TableControlledWindow::llenarTabla(ResponsePtr response)
 
 void TableControlledWindow::refresh()
 {
-    ResponsePtr usuarios = controller()->get();
-    llenarTabla(usuarios);
+    ResponsePtr entidades = controller()->get();
+    llenarTabla(entidades);
 }
 
 void TableControlledWindow::on_actionNuevo_triggered()

@@ -158,7 +158,17 @@ void ModelMovimientosStock::mapFields()
         return true;
     });
 
-    mapField("nombreMovimientoAnterior", 14, "Movimiento Anterior", true, false, [&] (EntidadBasePtr entidad) -> QVariant
+    mapField("cantidad", 14, "Cantidad", true, true, [&] (EntidadBasePtr entidad) -> QVariant
+    {
+        return cast(entidad)->cantidad();
+    },
+    [&] (EntidadBasePtr entidad, const QVariant &value) -> bool
+    {
+        cast(entidad)->setCantidad(value.toDouble());
+        return true;
+    });
+
+    mapField("nombreMovimientoAnterior", 15, "Movimiento Anterior", true, false, [&] (EntidadBasePtr entidad) -> QVariant
     {
         QString s = "";
         MovimientoStockPtr mov = cast(entidad)->movimientoAnterior();
@@ -191,7 +201,7 @@ MovimientoStockPtr ModelMovimientosStock::cast(EntidadBasePtr entidad)
     return qSharedPointerDynamicCast<MovimientoStock>(entidad);
 }
 
-ResponsePtr ModelMovimientosStock::getPorProducto(int idProducto)
+ResponsePtr ModelMovimientosStock::existenciaProducto(int idProducto)
 {
     QSqlQuery query(database());
 
@@ -202,5 +212,47 @@ ResponsePtr ModelMovimientosStock::getPorProducto(int idProducto)
     query.prepare(sql);
 
     query.bindValue(":idProducto", idProducto);
+    return get(query);
+}
+
+ResponsePtr ModelMovimientosStock::existenciaProductoUbicacion(int idProducto, int idUbicacion)
+{
+    QSqlQuery query(database());
+
+    QString sql = "select ms.id, ms.fechaHora, ms.idUsuario, ms.idProducto, ms.idUbicacion, ms.idMovimientoAnterior, ms.cantidad - ifnull(qty,0) as cantidad "
+                  " from movimientosStock ms left join (select idMovimientoAnterior, sum(ifnull(cantidad, 0)) as qty from movimientosStock group by idMovimientoAnterior) t1 "
+                  " on ms.id = t1.idMovimientoAnterior where ms.idProducto = :idProducto and ms.idUbicacion = :idUbicacion;";
+
+    query.prepare(sql);
+
+    query.bindValue(":idProducto", idProducto);
+    query.bindValue(":idUbicacion", idUbicacion);
+    return get(query);
+}
+
+ResponsePtr ModelMovimientosStock::existenciaUbicacion(int idUbicacion)
+{
+    QSqlQuery query(database());
+
+    QString sql = "select ms.id, ms.fechaHora, ms.idUsuario, ms.idProducto, ms.idUbicacion, ms.idMovimientoAnterior, ms.cantidad - ifnull(qty,0) as cantidad "
+                  " from movimientosStock ms left join (select idMovimientoAnterior, sum(ifnull(cantidad, 0)) as qty from movimientosStock group by idMovimientoAnterior) t1 "
+                  " on ms.id = t1.idMovimientoAnterior where ms.idUbicacion = :idUbicacion;";
+
+    query.prepare(sql);
+
+    query.bindValue(":idUbicacion", idUbicacion);
+    return get(query);
+}
+
+ResponsePtr ModelMovimientosStock::existencia()
+{
+    QSqlQuery query(database());
+
+    QString sql = "select ms.id, ms.fechaHora, ms.idUsuario, ms.idProducto, ms.idUbicacion, ms.idMovimientoAnterior, ms.cantidad - ifnull(qty,0) as cantidad "
+                  " from movimientosStock ms left join (select idMovimientoAnterior, sum(ifnull(cantidad, 0)) as qty from movimientosStock group by idMovimientoAnterior) t1 "
+                  " on ms.id = t1.idMovimientoAnterior;";
+
+    query.prepare(sql);
+
     return get(query);
 }

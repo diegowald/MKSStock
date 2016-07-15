@@ -11,7 +11,10 @@ class ModelMovimientosStock : public modelBase
 public:
     explicit ModelMovimientosStock(QSqlDatabase &database, QObject *parent = 0);
 
-    ResponsePtr getPorProducto(int idProducto);
+    ResponsePtr existenciaProducto(int idProducto);
+    ResponsePtr existenciaProductoUbicacion(int idProducto, int idUbicacion);
+    ResponsePtr existenciaUbicacion(int idUbicacion);
+    ResponsePtr existencia();
     MovimientoStockPtr cast(EntidadBasePtr entidad);
 
 protected:

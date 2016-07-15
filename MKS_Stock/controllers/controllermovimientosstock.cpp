@@ -34,3 +34,24 @@ bool ControllerMovimientosStock::editarEntidadExistente(EntidadBasePtr entidad)
     }
     return result;
 }
+
+
+ResponsePtr ControllerMovimientosStock::existenciaProducto(int idProducto)
+{
+    return _modelMovimientosStock->existenciaProducto(idProducto);
+}
+
+ResponsePtr ControllerMovimientosStock::existenciaProductoUbicacion(int idProducto, int idUbicacion)
+{
+    return _modelMovimientosStock->existenciaProductoUbicacion(idProducto, idUbicacion);
+}
+
+ResponsePtr ControllerMovimientosStock::existenciaUbicacion(int idUbicacion)
+{
+    return _modelMovimientosStock->existenciaUbicacion(idUbicacion);
+}
+
+ResponsePtr ControllerMovimientosStock::existencia()
+{
+    return _modelMovimientosStock->existencia();
+}

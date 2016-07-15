@@ -28,6 +28,7 @@ private slots:
 
 private:
     void llenarTabla(ResponsePtr response);
+
 private:
     Ui::TableControlledWindow *ui;
 
