@@ -8,6 +8,7 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlRecord>
 #include "models/response.h"
+#include "queryBuilder/querycondition.h"
 
 typedef std::function<QVariant (EntidadBasePtr)> GetFunction;
 typedef std::function<bool (EntidadBasePtr, const QVariant&)> SetFunction;
@@ -23,6 +24,7 @@ public:
     ResponsePtr get(int id);
     ResponsePtr get(QList<int> &ids);
     ResponsePtr get(QSqlQuery &qry);
+    ResponsePtr get(const QList<QueryConditionPtr> &conditions);
     void persist(EntidadBasePtr entidad);
     void persist(QList<EntidadBasePtr> &list);
 

@@ -6,6 +6,8 @@
 #include "models/modelubicaciones.h"
 #include "models/modelproductos.h"
 #include "models/modelmovimientosstock.h"
+#include <QStandardPaths>
+#include <QFileInfo>
 
 ModelContainer *ModelContainer::_instance;
 
@@ -17,7 +19,16 @@ void ModelContainer::initialize()
 
 void ModelContainer::init()
 {
-    _dbName = "./stock.db";
+    _dbName = QString("%1/%2")
+            .arg(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation))
+            .arg("stock.db");
+
+    QFileInfo fi(_dbName);
+    if (!fi.exists())
+    {
+        bool copySuccess = QFile::copy( QString(":/db/stock.db"), _dbName );
+    }
+    //_dbName = "./stock.db";
     if (!QSqlDatabase::database(_dbName).isValid())
     {
         _database = QSqlDatabase::addDatabase("QSQLITE", _dbName);

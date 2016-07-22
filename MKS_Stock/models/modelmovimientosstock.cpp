@@ -190,7 +190,7 @@ void ModelMovimientosStock::mapFields()
         }
         return s;
     },
-    [&] (EntidadBasePtr entidad, const QVariant &value) -> bool
+    [&] (EntidadBasePtr entidad, const QVariant &) -> bool
     {
         return true;
     });

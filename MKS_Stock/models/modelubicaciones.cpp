@@ -32,6 +32,16 @@ void ModelUbicaciones::mapFields()
         return true;
     }
     );
+
+    mapField("oculto", 3, "Oculto", false, true, [&] (EntidadBasePtr entidad) -> QVariant
+    {
+        return cast(entidad)->oculto();
+    },
+    [&] (EntidadBasePtr entidad, const QVariant &value) -> bool
+    {
+        cast(entidad)->setOculto(value.toBool());
+        return true;
+    });
 }
 
 UbicacionPtr ModelUbicaciones::cast(EntidadBasePtr entidad)

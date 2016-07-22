@@ -38,7 +38,8 @@ SOURCES += main.cpp\
     controllers/controllerusuarios.cpp \
     controllers/controllerproductos.cpp \
     controllers/controllermovimientosstock.cpp \
-    views/stockcontrolledwindow.cpp
+    views/stockcontrolledwindow.cpp \
+    queryBuilder/querycondition.cpp
 
 HEADERS  += mainwindow.h \
     entities/usuario.h \
@@ -65,7 +66,8 @@ HEADERS  += mainwindow.h \
     controllers/controllerusuarios.h \
     controllers/controllerproductos.h \
     controllers/controllermovimientosstock.h \
-    views/stockcontrolledwindow.h
+    views/stockcontrolledwindow.h \
+    queryBuilder/querycondition.h
 
 FORMS    += mainwindow.ui \
     views/windowusuarios.ui \
@@ -78,4 +80,7 @@ FORMS    += mainwindow.ui \
 
 CONFIG += mobility
 MOBILITY =
+
+RESOURCES += \
+    dbresources.qrc
 

@@ -129,6 +129,56 @@ ResponsePtr modelBase::get(QList<int> &ids)
     return response;
 }
 
+ResponsePtr modelBase::get(const QList<QueryConditionPtr> &conditions)
+{
+    QSqlQuery query(_database);
+
+    if (!_database.isOpen())
+    {
+        _database.open();
+    }
+
+    QStringList whereCondition;
+    foreach (QueryConditionPtr condition, conditions)
+    {
+        whereCondition.append(condition->conditionString());
+    }
+
+    QString sql = "SELECT COUNT(*) from %1 where %2;";
+    sql = sql.arg(_tableName).arg(whereCondition.join(" AND "));
+
+    foreach(QueryConditionPtr condition, conditions)
+    {
+        condition->bind(query);
+    }
+
+    query.exec(sql);
+
+    query.next();
+    int total = query.record().value(0).toInt();
+
+    ResponsePtr response = ResponsePtr::create(total, -1, -1, 0, this);
+
+    sql = "SELECT * from %1 where %2;";
+    sql = sql.arg(_tableName).arg(whereCondition.join(" AND "));
+
+    foreach(QueryConditionPtr condition, conditions)
+    {
+        condition->bind(query);
+    }
+
+    query.exec(sql);
+    if (query.lastError().text() != " ")
+        qDebug() << query.lastError().text();
+
+    while (query.next())
+    {
+        response->list().append(createEntity(query.record()));
+    }
+
+    return response;
+}
+
 EntidadBasePtr modelBase::createEntity(const QSqlRecord &record)
 {
     EntidadBasePtr entidad = internalCreateEntity();
@@ -189,6 +239,7 @@ QSqlQuery *modelBase::getQuery(EntidadBasePtr entidad)
         qry = crearDelete(entidad);
         break;
     case StatusEntidad::SIN_CAMBIOS:
+    case StatusEntidad::INICIALIZANDO:
         break;
     }
 
